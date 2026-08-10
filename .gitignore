@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+server/unikit_dev.db
+tests/test_unikit.db
+.venv/

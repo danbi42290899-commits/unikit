@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>UNI-KIT Mock UNI-HUB — Developer Monitor</title>
+  <link rel="stylesheet" href="monitor.css" />
+</head>
+<body>
+  <header>
+    <h1>UNI-KIT Mock UNI-HUB <span class="badge">SIMULATION</span></h1>
+    <div class="conn-indicator">
+      <span id="telemetry-dot" class="dot"></span> telemetry
+      <span id="control-dot" class="dot"></span> control
+    </div>
+  </header>
+
+  <p class="disclaimer">
+    Developer monitor only — not the Phone or Glass application. All values
+    below are synthetic and marked <code>simulated: true</code>.
+  </p>
+
+  <section class="grid">
+    <div class="panel" id="panel-patient">
+      <h2>Patient / Exam</h2>
+      <form id="patient-form">
+        <input id="f-patientId" placeholder="patientId (e.g. P001)" required />
+        <input id="f-displayName" placeholder="display name" required />
+        <input id="f-age" type="number" placeholder="age" />
+        <select id="f-sex">
+          <option value="">sex</option>
+          <option value="F">F</option>
+          <option value="M">M</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+        <div class="btn-row">
+          <button type="submit">Create Patient + Start Exam</button>
+          <button type="button" id="btn-end-exam">End Exam</button>
+        </div>
+      </form>
+      <dl>
+        <dt>patientId</dt><dd id="v-patientId">—</dd>
+        <dt>examId</dt><dd id="v-examId">—</dd>
+        <dt>name</dt><dd id="v-displayName">—</dd>
+        <dt>age / sex</dt><dd id="v-ageSex">—</dd>
+      </dl>
+    </div>
+
+    <div class="panel" id="panel-vitals">
+      <h2>Vitals <span class="sim-tag">simulated</span></h2>
+      <dl>
+        <dt>BP</dt><dd><span id="v-bp">— / —</span> mmHg</dd>
+        <dt>SpO2</dt><dd><span id="v-spo2">—</span> %</dd>
+        <dt>HR</dt><dd><span id="v-hr">—</span> bpm</dd>
+        <dt>Temp</dt><dd><span id="v-temp">—</span> °C</dd>
+        <dt>last vitals msg</dt><dd id="v-vitals-ts">—</dd>
+      </dl>
+    </div>
+
+    <div class="panel" id="panel-glass">
+      <h2>GlassState</h2>
+      <dl>
+        <dt>connected</dt><dd id="g-connected">—</dd>
+        <dt>examMode</dt><dd id="g-examMode">—</dd>
+        <dt>laterality</dt><dd id="g-laterality">—</dd>
+        <dt>recording</dt><dd id="g-recording">—</dd>
+        <dt>frozen</dt><dd id="g-frozen">—</dd>
+        <dt>endoscopeConnected</dt><dd id="g-endoscope">—</dd>
+        <dt>lastSeen</dt><dd id="g-lastSeen">—</dd>
+      </dl>
+      <div class="btn-row wrap">
+        <button data-cmd="SET_OTOSCOPE_LEFT">OTOSCOPE LEFT</button>
+        <button data-cmd="SET_OTOSCOPE_RIGHT">OTOSCOPE RIGHT</button>
+        <button data-cmd="SET_COLPOSCOPE">COLPOSCOPE</button>
+        <button data-cmd="CAPTURE">CAPTURE</button>
+        <button data-cmd="START_RECORDING">START REC</button>
+        <button data-cmd="STOP_RECORDING">STOP REC</button>
+        <button data-cmd="FREEZE">FREEZE</button>
+        <button data-cmd="UNFREEZE">UNFREEZE</button>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-devices">
+      <h2>Devices</h2>
+      <table id="device-table">
+        <thead><tr><th>device</th><th>state</th><th>lastSeen</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="panel wide" id="panel-ppg">
+      <h2>Synthetic PPG (IR) <span class="sim-tag">simulated</span></h2>
+      <canvas id="ppg-canvas" width="900" height="140"></canvas>
+    </div>
+
+    <div class="panel wide" id="panel-ecg">
+      <h2>Synthetic ECG <span class="sim-tag">simulated</span></h2>
+      <canvas id="ecg-canvas" width="900" height="140"></canvas>
+    </div>
+
+    <div class="panel wide" id="panel-events">
+      <h2>Event / message log</h2>
+      <div id="log"></div>
+    </div>
+  </section>
+
+  <script src="monitor.js"></script>
+</body>
+</html>

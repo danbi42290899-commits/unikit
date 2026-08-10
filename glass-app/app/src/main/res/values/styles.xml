@@ -1,0 +1,24 @@
+<resources>
+    <style name="HudVitalText">
+        <item name="android:textColor">@color/hud_text_primary</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:paddingBottom">2dp</item>
+    </style>
+
+    <style name="HudStatusText">
+        <item name="android:textColor">@color/hud_text_primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="HudBadgeText">
+        <item name="android:textColor">@color/hud_sim_badge</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#33FFC94D</item>
+        <item name="android:paddingHorizontal">4dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+</resources>

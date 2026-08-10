@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    namespace = "com.unikit.glass"
+
+    // compileSdk is a build-tooling version only. It does NOT change what
+    // runs on the device. Glass Enterprise Edition 2 actually runs Android
+    // 8.1 (API 27) -- see minSdk/targetSdk below, which are what matter for
+    // device compatibility.
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId "com.unikit.glass"
+        minSdk 26
+        // Deliberately pinned to 27 (Android 8.1), matching Glass EE2's
+        // actual OS version, instead of chasing compileSdk. Targeting a
+        // much newer API on a device that will never run it just risks
+        // opting into behavior changes (permissions, background limits,
+        // etc.) that were never validated against this hardware.
+        targetSdk 27
+        versionCode 1
+        versionName "0.2.0-phase2"
+
+        // Centralized UNI-HUB network defaults (see network/UniHubConfig.kt).
+        // Change these two values to point the app at a different Mock
+        // UNI-HUB / real UNI-HUB instance without touching any other file.
+        // Can also be overridden per-launch via an Intent extra, see
+        // docs/glass_app.md "Configuring the UNI-HUB address".
+        buildConfigField "String", "UNI_HUB_HOST", "\"192.168.0.10\""
+        buildConfigField "int", "UNI_HUB_PORT", "8000"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.13.1"
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+
+    // WebSocket client for /ws/telemetry and /ws/control. No Google Play
+    // Services dependency; standard, widely used Android networking library.
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+
+    // Structures reconnect/staleness logic without hand-rolled threading.
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+}

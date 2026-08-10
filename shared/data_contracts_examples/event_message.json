@@ -1,0 +1,9 @@
+{
+  "type": "event",
+  "patientId": "P001",
+  "examId": "E09A7AC49",
+  "timestamp": "2026-08-10T09:46:05.000000+00:00",
+  "sourceDevice": "MOCK_UNI_HUB",
+  "eventType": "SET_OTOSCOPE_RIGHT",
+  "detail": {}
+}

@@ -1,0 +1,10 @@
+<resources>
+    <color name="hud_background">#FF000000</color>
+    <color name="hud_text_primary">#FFFFFFFF</color>
+    <color name="hud_text_muted">#FF9AA0AC</color>
+    <color name="hud_connected">#FF4CD964</color>
+    <color name="hud_disconnected">#FFFF4D4D</color>
+    <color name="hud_connecting">#FFFFC94D</color>
+    <color name="hud_sim_badge">#FFFFC94D</color>
+    <color name="hud_banner_bg">#CC1A1A1A</color>
+</resources>

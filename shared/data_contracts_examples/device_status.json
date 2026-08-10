@@ -1,0 +1,8 @@
+{
+  "type": "device_status",
+  "device": "SPO2",
+  "state": "CONNECTED",
+  "lastSeen": "2026-08-10T09:46:00.507292+00:00",
+  "quality": "good",
+  "simulated": true
+}

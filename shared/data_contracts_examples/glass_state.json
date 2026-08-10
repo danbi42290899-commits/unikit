@@ -1,0 +1,21 @@
+{
+  "type": "glass_state",
+  "connected": true,
+  "patientId": "P001",
+  "examId": "E09A7AC49",
+  "patientDisplayName": "KJH",
+  "age": 32,
+  "sex": "F",
+  "bpSys": 118,
+  "bpDia": 76,
+  "spo2": 98,
+  "heartRate": 72,
+  "temperature": 36.7,
+  "examMode": "OTOSCOPE_RIGHT",
+  "laterality": "RIGHT",
+  "recording": false,
+  "frozen": false,
+  "endoscopeConnected": false,
+  "lastSeen": "2026-08-10T09:46:05.000000+00:00",
+  "simulated": true
+}

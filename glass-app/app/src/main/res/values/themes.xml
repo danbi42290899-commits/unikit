@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.UnikitGlass" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/hud_background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="colorPrimary">@color/hud_text_primary</item>
+        <item name="colorAccent">@color/hud_connected</item>
+    </style>
+</resources>

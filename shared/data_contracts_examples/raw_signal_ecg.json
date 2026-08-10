@@ -1,0 +1,14 @@
+{
+  "type": "raw_signal",
+  "patientId": "P001",
+  "examId": "E09A7AC49",
+  "signal": "ECG",
+  "sampleRate": 100,
+  "unit": "mV",
+  "channel": "default",
+  "timestamp": "2026-08-10T09:46:00.423456+00:00",
+  "sourceDevice": "MOCK_UNI_HUB",
+  "quality": "good",
+  "simulated": true,
+  "samples": [0.0021, 0.0034, 0.0198, 0.4211, 0.9123, 0.4033, 0.0521, 0.0102, 0.0011, -0.0005]
+}

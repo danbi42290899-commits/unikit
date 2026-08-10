@@ -1,0 +1,16 @@
+{
+  "type": "vitals",
+  "patientId": "P001",
+  "examId": "E09A7AC49",
+  "timestamp": "2026-08-10T09:46:00.123456+00:00",
+  "sourceDevice": "MOCK_UNI_HUB",
+  "quality": "good",
+  "simulated": true,
+  "data": {
+    "bpSys": 118,
+    "bpDia": 76,
+    "spo2": 98,
+    "heartRate": 72,
+    "temperature": 36.7
+  }
+}

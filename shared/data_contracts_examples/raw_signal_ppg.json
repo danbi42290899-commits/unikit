@@ -1,0 +1,14 @@
+{
+  "type": "raw_signal",
+  "patientId": "P001",
+  "examId": "E09A7AC49",
+  "signal": "PPG_IR",
+  "sampleRate": 50,
+  "unit": "ADC_COUNT",
+  "channel": "default",
+  "timestamp": "2026-08-10T09:46:00.323456+00:00",
+  "sourceDevice": "MOCK_UNI_HUB",
+  "quality": "good",
+  "simulated": true,
+  "samples": [50012.3, 50040.1, 49988.7, 50101.4, 49975.2, 50033.9, 50060.5, 49990.1, 50011.8, 50042.6]
+}
