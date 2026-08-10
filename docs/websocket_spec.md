@@ -95,12 +95,39 @@ direct reply, it comes back the same way every other subscriber gets it, on
 `/ws/telemetry`. This is what keeps the Phone Glass-control screen from
 becoming disguised screen mirroring.
 
+## `/ws/camera` — binary frame relay (added out of phase order)
+
+Added ahead of the rest of Phase 3, to get a live phone camera feed onto
+Glass. Query param `role` is required and must be `PHONE` or `GLASS`;
+anything else closes the connection with code 1008.
+
+- `?role=PHONE`: sends one **binary** WebSocket message per JPEG frame.
+  Each frame relayed marks the `PHONE_CAMERA` device `CONNECTED` (same
+  registry/heartbeat mechanism as `GLASS` on `/ws/telemetry`); on
+  disconnect it flips back to `DISCONNECTED`, broadcast on
+  `/ws/telemetry` as a normal `device_status` event.
+- `?role=GLASS`: receives every frame the current `PHONE` sender relays,
+  verbatim, as binary messages. Doesn't need to send anything back;
+  text frames it does send are ignored (used only to detect disconnect).
+- Deliberately a separate socket from `/ws/telemetry` — frame bytes never
+  share a channel with JSON vitals, so the vitals stream's message
+  parsing never has to skip binary frames.
+- No buffering/backlog: a `GLASS` viewer that connects mid-stream just
+  gets frames from that point on, same non-resumable-stream rule as
+  `/ws/telemetry`.
+- This is a plain per-frame JPEG relay, not WebRTC — simplest thing that
+  gets a visible feed onto Glass today. See `docs/development_roadmap.md`
+  "Camera relay (added out of phase order)" for why this jumped ahead of
+  the rest of Phase 3.
+
 ## Not implemented in Phase 1
 
-- No authentication/authorization on either socket (single-user dev LAN
+- No authentication/authorization on any socket (single-user dev LAN
   assumption for now).
 - No reconnect/resume-from-sequence-number support — a reconnecting client
   gets the next broadcast, not a backlog. `GET /glass/state` (REST) is the
   way to fetch current state on (re)connect.
-- No WebRTC endpoints for endoscope video / stethoscope audio yet — see
-  `docs/api_spec.md`'s "Not implemented" section.
+- No WebRTC endpoints for endoscope video / stethoscope audio yet.
+  `/ws/camera` (above) covers the phone-camera-to-Glass case with a much
+  simpler per-frame relay; a real endoscope/stethoscope pipeline may still
+  want WebRTC later — see `docs/api_spec.md`'s "Not implemented" section.

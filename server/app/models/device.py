@@ -14,6 +14,7 @@ DeviceName = Literal[
     "ECG",
     "STETHOSCOPE",
     "ENDOSCOPE",
+    "PHONE_CAMERA",
 ]
 
 

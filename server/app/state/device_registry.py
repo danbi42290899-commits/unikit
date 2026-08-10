@@ -13,6 +13,7 @@ ALL_DEVICES: list[DeviceName] = [
     "ECG",
     "STETHOSCOPE",
     "ENDOSCOPE",
+    "PHONE_CAMERA",
 ]
 
 

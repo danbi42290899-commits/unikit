@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UNI-KIT Phone</string>
+    <string name="camera_preview_description">Live preview of what is being sent to UNI-HUB</string>
+    <string name="status_disconnected">DISCONNECTED</string>
+    <string name="status_connecting">CONNECTING…</string>
+    <string name="status_connected">CONNECTED</string>
+    <string name="button_start">START STREAMING</string>
+    <string name="button_stop">STOP STREAMING</string>
+    <string name="camera_permission_rationale">Camera access is needed to stream video to the Glass HUD.</string>
+</resources>

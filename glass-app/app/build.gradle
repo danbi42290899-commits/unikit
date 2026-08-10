@@ -27,7 +27,10 @@ android {
         // UNI-HUB / real UNI-HUB instance without touching any other file.
         // Can also be overridden per-launch via an Intent extra, see
         // docs/glass_app.md "Configuring the UNI-HUB address".
-        buildConfigField "String", "UNI_HUB_HOST", "\"192.168.0.10\""
+        //
+        // 10.42.0.1 is NetworkManager's fixed gateway address when the Pi
+        // runs pi/setup_ap.sh (ipv4.method=shared) -- see pi/README.md.
+        buildConfigField "String", "UNI_HUB_HOST", "\"10.42.0.1\""
         buildConfigField "int", "UNI_HUB_PORT", "8000"
     }
 

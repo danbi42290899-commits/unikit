@@ -1,8 +1,10 @@
 package com.unikit.glass.repository
 
+import android.graphics.Bitmap
 import android.os.SystemClock
 import android.util.Log
 import com.unikit.glass.model.GlassStateMessage
+import com.unikit.glass.network.CameraClient
 import com.unikit.glass.network.ControlClient
 import com.unikit.glass.network.TelemetryClient
 import com.unikit.glass.state.UniHubConnectionState
@@ -36,6 +38,9 @@ class UniHubRepository(
     private val _glassState = MutableStateFlow<GlassStateMessage?>(null)
     val glassState: StateFlow<GlassStateMessage?> = _glassState.asStateFlow()
 
+    private val _cameraFrame = MutableStateFlow<Bitmap?>(null)
+    val cameraFrame: StateFlow<Bitmap?> = _cameraFrame.asStateFlow()
+
     /** true = last CAPTURE was acknowledged ok, false = it failed/errored. */
     private val _captureResults = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
     val captureResults: SharedFlow<Boolean> = _captureResults.asSharedFlow()
@@ -53,6 +58,12 @@ class UniHubRepository(
             Log.w(TAG, "control error while awaiting ack: $message")
             _captureResults.tryEmit(false)
         },
+    )
+
+    private val cameraClient = CameraClient(
+        httpClient = okHttpClient,
+        decodeScope = scope,
+        onFrame = { _cameraFrame.value = it },
     )
 
     /**
@@ -82,6 +93,7 @@ class UniHubRepository(
         Log.i(TAG, "starting UNI-HUB repository")
         telemetryClient.start()
         controlClient.start()
+        cameraClient.start()
         scope.launch {
             while (isActive) {
                 val elapsed = SystemClock.elapsedRealtime() - lastTelemetryReceivedAtMs
@@ -94,6 +106,7 @@ class UniHubRepository(
     fun stop() {
         telemetryClient.stop()
         controlClient.stop()
+        cameraClient.stop()
     }
 
     /** Returns false immediately (no ack will follow) if not connected. */

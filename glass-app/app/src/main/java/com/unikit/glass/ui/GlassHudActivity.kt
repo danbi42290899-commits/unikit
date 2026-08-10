@@ -1,5 +1,6 @@
 package com.unikit.glass.ui
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.unikit.glass.R
@@ -51,6 +53,8 @@ class GlassHudActivity : AppCompatActivity() {
     private lateinit var textExamMode: TextView
     private lateinit var textRecording: TextView
     private lateinit var textBanner: TextView
+    private lateinit var imageCamera: ImageView
+    private lateinit var textEndoscopePlaceholder: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +94,8 @@ class GlassHudActivity : AppCompatActivity() {
         textExamMode = findViewById(R.id.textExamMode)
         textRecording = findViewById(R.id.textRecording)
         textBanner = findViewById(R.id.textBanner)
+        imageCamera = findViewById(R.id.imageCamera)
+        textEndoscopePlaceholder = findViewById(R.id.textEndoscopePlaceholder)
     }
 
     /**
@@ -112,6 +118,7 @@ class GlassHudActivity : AppCompatActivity() {
     private fun observeRepository() {
         activityScope.launch { repository.glassState.collect { state -> renderGlassState(state) } }
         activityScope.launch { repository.connectionState.collect { state -> renderConnectionState(state) } }
+        activityScope.launch { repository.cameraFrame.collect { frame -> renderCameraFrame(frame) } }
         activityScope.launch {
             repository.captureResults.collect { ok ->
                 showTransientBanner(if (ok) "CAPTURE SAVED" else "CAPTURE FAILED", CAPTURE_BANNER_MS)
@@ -158,6 +165,17 @@ class GlassHudActivity : AppCompatActivity() {
         textExamMode.text = examModeLabel(state.examMode)
         textRecording.text = formatRecordingLabel(state)
         textSimBadge.visibility = if (state.simulated) View.VISIBLE else View.GONE
+    }
+
+    private fun renderCameraFrame(frame: Bitmap?) {
+        if (frame == null) {
+            imageCamera.visibility = View.GONE
+            textEndoscopePlaceholder.visibility = View.VISIBLE
+            return
+        }
+        imageCamera.setImageBitmap(frame)
+        imageCamera.visibility = View.VISIBLE
+        textEndoscopePlaceholder.visibility = View.GONE
     }
 
     private fun formatPatientLabel(state: GlassStateMessage): String {
@@ -214,8 +232,10 @@ class GlassHudActivity : AppCompatActivity() {
             UniHubConnectionState.DISCONNECTED -> {
                 textConnection.text = "DISCONNECTED"
                 textConnection.setTextColor(color(R.color.hud_disconnected))
-                // Do not keep showing stale medical values as current.
+                // Do not keep showing stale medical values (or a frozen
+                // last camera frame) as current.
                 renderGlassState(null)
+                renderCameraFrame(null)
                 showPersistentDisconnectedBanner()
             }
         }

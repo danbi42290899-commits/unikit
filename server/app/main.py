@@ -11,7 +11,7 @@ from app.logging_config import configure_logging
 from app.providers.mock_provider import MockECGProvider, MockPPGProvider, MockVitalsProvider
 from app.routers import devices, exams, glass, patients, status
 from app.state.glass_state_manager import glass_state_manager
-from app.ws import control, telemetry
+from app.ws import camera, control, telemetry
 from app.ws.connection_manager import telemetry_manager
 from app.ws.telemetry import telemetry_loop
 
@@ -55,6 +55,7 @@ app.include_router(devices.router)
 app.include_router(glass.router)
 app.include_router(telemetry.router)
 app.include_router(control.router)
+app.include_router(camera.router)
 
 app.mount(
     "/monitor",

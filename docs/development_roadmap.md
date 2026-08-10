@@ -8,7 +8,7 @@ approval before starting (per project rules — do not jump ahead).
 |---|---|---|
 | 1 | Mock UNI-HUB (FastAPI server, models, REST + WebSocket API, SQLite, developer browser monitor, tests, docs) | **Done** |
 | 2 | Google Glass HUD client | **Done — source complete, offline build verified, WebSocket protocol verified live; on-device/emulator testing still pending (no Android runtime in this environment), see `docs/glass_app.md`** |
-| 3 | Android Phone basic app | Not started |
+| 3 | Android Phone basic app | **Started — camera capture + upload only** (see below); no patient/exam UI yet |
 | 4 | Phone ↔ UNI-HUB ↔ Glass synchronization (end-to-end with real clients) | Not started |
 | 5 | Raw signal graph components (Phone-side PPG/ECG rendering) | Not started |
 | 6 | Patient/examination storage hardening (beyond Phase 1's dev SQLite) | Not started |
@@ -58,7 +58,29 @@ approval before starting (per project rules — do not jump ahead).
 Full verification detail, including what still requires the user's
 Windows PC / physical Glass EE2, is in `docs/glass_app.md`.
 
+## Camera relay (added out of phase order)
+
+Driven by an explicit ask to get the phone's camera showing on Glass
+immediately, ahead of the rest of Phase 3:
+
+- `server/app/ws/camera.py` + `camera_relay.py` -- `/ws/camera` binary
+  WebSocket relay. `?role=PHONE` uploads one JPEG per binary frame;
+  `?role=GLASS` receives every frame relayed verbatim. Separate from
+  `/ws/telemetry` so frame bytes never share a channel with JSON vitals.
+  New `PHONE_CAMERA` device in the registry, tracked the same way as
+  `GLASS`.
+- `glass-app` -- `CameraClient` (binary-frame counterpart to
+  `TelemetryClient`), decodes off the main thread, renders into the
+  `imageCamera` view that now fills the same center area
+  `docs/glass_app.md` originally reserved for a future endoscope feed.
+- `phone-app/` -- new, minimal: CameraX capture + `CameraUploadClient`
+  (same bounded-backoff reconnect pattern as glass-app). No patient/exam
+  UI, no `/ws/control` or `/ws/telemetry` client yet -- just enough to get
+  a live feed onto Glass. The rest of Phase 3 (patient/exam UI, control
+  commands from the phone) is still not started.
+
 ## Explicitly not started
 
-`phone-app/` does not exist in the repo yet. Do not create or scaffold it
-until Phase 3 is explicitly approved.
+Patient/exam UI, `/ws/control` command sending, and `/ws/telemetry`
+consumption on the phone side. Do not build these until Phase 3 is
+explicitly approved as a whole.

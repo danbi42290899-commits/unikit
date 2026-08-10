@@ -1,9 +1,8 @@
-package com.unikit.glass.network
+package com.unikit.phone.network
 
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.unikit.glass.state.UniHubConnectionState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,44 +11,30 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import okio.ByteString
+import okio.Buffer
+
+enum class UploadConnectionState { CONNECTING, CONNECTED, RECONNECTING, DISCONNECTED }
 
 /**
- * Shared reconnect/backoff machinery for a single WebSocket endpoint.
- * TelemetryClient and ControlClient both extend this rather than each
- * re-implementing exponential backoff.
- *
- * Survives temporary Wi-Fi loss without the app restarting: on any
- * failure/close it schedules another attempt with bounded exponential
- * backoff (1s, 2s, 4s, ... capped at 30s) and keeps retrying forever.
+ * Sends camera frames to /ws/camera?role=PHONE, one binary WebSocket
+ * message per JPEG frame. Mirrors the bounded exponential backoff
+ * reconnect glass-app's ReconnectingWebSocketClient uses, so a transient
+ * Wi-Fi drop during a demo doesn't require restarting the app.
  */
-abstract class ReconnectingWebSocketClient(
-    private val httpClient: OkHttpClient,
-    private val url: String,
-    protected val logTag: String,
-) {
+class CameraUploadClient(private val httpClient: OkHttpClient) {
     private val mainHandler = Handler(Looper.getMainLooper())
     private var webSocket: WebSocket? = null
     private var retryAttempt = 0
     private var stopped = true
 
-    private val _connectionState = MutableStateFlow(UniHubConnectionState.CONNECTING)
-    val connectionState: StateFlow<UniHubConnectionState> = _connectionState.asStateFlow()
-
-    /** Called on the main thread for every text frame received. */
-    protected abstract fun onMessageReceived(text: String)
-
-    /** Called on the main thread for every binary frame received. No-op unless overridden. */
-    protected open fun onBinaryMessageReceived(bytes: ByteString) {}
-
-    /** Called on the main thread right after the socket opens. */
-    protected open fun onConnected() {}
+    private val _connectionState = MutableStateFlow(UploadConnectionState.DISCONNECTED)
+    val connectionState: StateFlow<UploadConnectionState> = _connectionState.asStateFlow()
 
     fun start() {
         if (!stopped) return
         stopped = false
         retryAttempt = 0
-        _connectionState.value = UniHubConnectionState.CONNECTING
+        _connectionState.value = UploadConnectionState.CONNECTING
         connect()
     }
 
@@ -58,37 +43,29 @@ abstract class ReconnectingWebSocketClient(
         mainHandler.removeCallbacksAndMessages(null)
         webSocket?.close(1000, "client stop")
         webSocket = null
+        _connectionState.value = UploadConnectionState.DISCONNECTED
     }
 
-    /** Returns false if there is currently no open socket to send on. */
-    fun send(text: String): Boolean {
+    /** Returns false immediately (frame dropped) if not currently connected. */
+    fun sendFrame(jpegBytes: ByteArray): Boolean {
         val socket = webSocket ?: return false
-        return socket.send(text)
+        return socket.send(Buffer().write(jpegBytes).readByteString())
     }
 
     private fun connect() {
         if (stopped) return
-        Log.i(logTag, "connecting to $url")
-        val request = Request.Builder().url(url).build()
+        Log.i(TAG, "connecting to ${UniHubConfig.cameraUploadUrl}")
+        val request = Request.Builder().url(UniHubConfig.cameraUploadUrl).build()
         webSocket = httpClient.newWebSocket(request, listener)
     }
 
     private val listener = object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
-            Log.i(logTag, "connected")
+            Log.i(TAG, "connected")
             mainHandler.post {
                 retryAttempt = 0
-                _connectionState.value = UniHubConnectionState.CONNECTED
-                onConnected()
+                _connectionState.value = UploadConnectionState.CONNECTED
             }
-        }
-
-        override fun onMessage(webSocket: WebSocket, text: String) {
-            mainHandler.post { onMessageReceived(text) }
-        }
-
-        override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-            mainHandler.post { onBinaryMessageReceived(bytes) }
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -96,12 +73,12 @@ abstract class ReconnectingWebSocketClient(
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-            Log.i(logTag, "closed: code=$code reason=$reason")
+            Log.i(TAG, "closed: code=$code reason=$reason")
             mainHandler.post { scheduleReconnect() }
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-            Log.w(logTag, "connection failure: ${t.message}")
+            Log.w(TAG, "connection failure: ${t.message}")
             mainHandler.post { scheduleReconnect() }
         }
     }
@@ -109,19 +86,20 @@ abstract class ReconnectingWebSocketClient(
     private fun scheduleReconnect() {
         if (stopped) return
         webSocket = null
-        _connectionState.value = UniHubConnectionState.DISCONNECTED
+        _connectionState.value = UploadConnectionState.DISCONNECTED
         val delayMs = backoffDelayMillis(retryAttempt)
         retryAttempt++
-        Log.i(logTag, "reconnecting in ${delayMs}ms (attempt $retryAttempt)")
+        Log.i(TAG, "reconnecting in ${delayMs}ms (attempt $retryAttempt)")
         mainHandler.postDelayed({
             if (!stopped) {
-                _connectionState.value = UniHubConnectionState.RECONNECTING
+                _connectionState.value = UploadConnectionState.RECONNECTING
                 connect()
             }
         }, delayMs)
     }
 
     companion object {
+        private const val TAG = "CameraUploadClient"
         private const val BASE_DELAY_MS = 1000L
         private const val MAX_DELAY_MS = 30_000L
         private const val MAX_EXPONENT = 5 // 1000ms * 2^5 = 32s, then clamped to 30s

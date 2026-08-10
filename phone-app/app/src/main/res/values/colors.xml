@@ -1,0 +1,6 @@
+<resources>
+    <color name="status_connected">#FF4CD964</color>
+    <color name="status_disconnected">#FFFF4D4D</color>
+    <color name="status_connecting">#FFFFC94D</color>
+    <color name="scrim_bg">#CC1A1A1A</color>
+</resources>

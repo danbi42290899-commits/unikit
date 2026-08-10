@@ -74,9 +74,10 @@
             tools:visibility="visible" />
     </LinearLayout>
 
-    <!-- ============ CENTER: endoscope placeholder ============ -->
-    <!-- Deliberately empty. A future video surface fills exactly this
-         area without moving any of the surrounding HUD elements. -->
+    <!-- ============ CENTER: camera / endoscope view ============ -->
+    <!-- imageCamera renders whatever /ws/camera relays: phone camera today,
+         a real endoscope feed later, same relay and same view. Placeholder
+         text stays visible until the first frame arrives. -->
     <FrameLayout
         android:id="@+id/endoscopeArea"
         android:layout_width="0dp"
@@ -85,6 +86,15 @@
         app:layout_constraintBottom_toTopOf="@id/examModeBlock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imageCamera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:contentDescription="@string/camera_view_description"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/textEndoscopePlaceholder"

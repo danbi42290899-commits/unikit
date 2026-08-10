@@ -8,6 +8,11 @@ Full docs: `docs/architecture.md`, `docs/data_contracts.md`,
 `docs/api_spec.md`, `docs/websocket_spec.md`, `docs/integration_adapter.md`,
 `docs/development_roadmap.md`.
 
+Everything below runs the server standalone against Mock providers, for
+development off the real hardware. To run the server **on the Raspberry
+Pi itself as the Wi-Fi access point** Phone and Glass join directly, see
+`pi/README.md` instead.
+
 ## Setup
 
 This machine's system Python (3.8) can't build a `venv` (`ensurepip`

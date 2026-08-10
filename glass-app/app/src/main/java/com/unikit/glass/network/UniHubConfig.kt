@@ -26,6 +26,9 @@ object UniHubConfig {
     val controlUrl: String
         get() = "ws://$host:$port/ws/control"
 
+    val cameraUrl: String
+        get() = "ws://$host:$port/ws/camera?role=GLASS"
+
     val baseHttpUrl: String
         get() = "http://$host:$port"
 }

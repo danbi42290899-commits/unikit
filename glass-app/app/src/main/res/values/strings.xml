@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UNI-KIT Glass</string>
+    <string name="camera_view_description">Live camera feed relayed from UNI-HUB</string>
 </resources>

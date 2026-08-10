@@ -1,0 +1,17 @@
+[Unit]
+Description=UNI-KIT UNI-HUB server
+After=network-online.target NetworkManager.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust User/WorkingDirectory/ExecStart if the repo isn't cloned to
+# /home/pi/unikit under user "pi" -- see pi/README.md.
+User=pi
+WorkingDirectory=/home/pi/unikit/server
+ExecStart=/home/pi/unikit/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
