@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared patient/vitals header, included at the top of ExamHomeFragment and
+  every module fragment. Bound generically by ui/VitalsHeaderBinder.kt,
+  see ~/.claude/plans/curious-floating-flame.md #5's "single source of
+  truth" requirement (ExamSession + repository, not a per-fragment copy).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/headerRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/surface_white"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp"
+    android:elevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/headerPatientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Kim Ji-hoon" />
+
+            <TextView
+                android:id="@+id/headerPatientMeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"
+                tools:text="M Β· 32 Β· P001 Β· E09A7AC49" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/headerConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:text="@string/status_disconnected"
+            android:textColor="@color/status_disconnected"
+            tools:text="CONNECTED" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/label_bp" android:textSize="11sp" android:textColor="@color/text_secondary" />
+            <TextView android:id="@+id/headerBp" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="--/--" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/label_spo2" android:textSize="11sp" android:textColor="@color/text_secondary" />
+            <TextView android:id="@+id/headerSpo2" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="--%" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/label_hr" android:textSize="11sp" android:textColor="@color/text_secondary" />
+            <TextView android:id="@+id/headerHr" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="--" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/label_temp" android:textSize="11sp" android:textColor="@color/text_secondary" />
+            <TextView android:id="@+id/headerTemp" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="-- C" android:textSize="18sp" android:textStyle="bold" android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

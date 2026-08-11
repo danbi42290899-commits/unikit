@@ -13,7 +13,7 @@ Base = declarative_base()
 
 
 def init_db() -> None:
-    from app.models import patient, exam, event  # noqa: F401  (register tables)
+    from app.models import patient, exam, event, media  # noqa: F401  (register tables)
 
     Base.metadata.create_all(bind=engine)
 

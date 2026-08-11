@@ -7,6 +7,14 @@ directly; nothing here can be driven remotely from a dev machine that
 isn't on the Pi's network (see main repo `README.md` for the mock-only
 dev workflow, which doesn't need any of this).
 
+**Not what's running today.** The current prototype instead has the Pi,
+Phone, and Glass all joining an existing personal mobile hotspot, with
+the Pi reachable at `10.18.168.235:8000` (a hotspot-assigned address,
+not the `10.42.0.1` this doc's `setup_ap.sh` flow produces). Phone/Glass
+`UNI_HUB_HOST` already defaults to `10.18.168.235`. This whole doc
+describes the AP-hosted mode for when the Pi becomes its own network
+later -- don't run `setup_ap.sh` against the current hotspot setup.
+
 ## 1. Get the code onto the Pi
 
 ```bash

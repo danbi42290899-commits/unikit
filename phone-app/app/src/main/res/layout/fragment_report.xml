@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/surface_white"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/buttonBack"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt; EXAM HOME" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="EXAMINATION REPORT"
+            android:textColor="@color/accent_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Patient / exam header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/surface_white"
+                android:padding="16dp">
+
+                <TextView android:id="@+id/textPatientName" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="--" android:textColor="@color/text_primary" android:textSize="22sp" android:textStyle="bold" />
+                <TextView android:id="@+id/textPatientMeta" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="--" android:textColor="@color/text_secondary" android:textSize="13sp" />
+                <TextView android:id="@+id/textExamTimes" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="--" android:textColor="@color/text_secondary" android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="VITALS SNAPSHOT" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/vitalsSnapshotContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surface_white"
+                android:padding="16dp"
+                android:layout_marginTop="4dp"
+                android:weightSum="4">
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BP" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                    <TextView android:id="@+id/reportBp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--/--" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SpO2" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                    <TextView android:id="@+id/reportSpo2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--%" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HR" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                    <TextView android:id="@+id/reportHr" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TEMP" android:textColor="@color/text_secondary" android:textSize="11sp" />
+                    <TextView android:id="@+id/reportTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="@color/text_primary" android:textSize="16sp" android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="OTOSCOPE -- LEFT EAR" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp">
+                <LinearLayout android:id="@+id/otoscopeLeftContainer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:minHeight="96dp" />
+            </HorizontalScrollView>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="OTOSCOPE -- RIGHT EAR" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp">
+                <LinearLayout android:id="@+id/otoscopeRightContainer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:minHeight="96dp" />
+            </HorizontalScrollView>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="COLPOSCOPE" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp">
+                <LinearLayout android:id="@+id/colposcopeContainer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:minHeight="96dp" />
+            </HorizontalScrollView>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:text="ECG" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Waveform reference not yet available -- event log only." android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="italic" />
+            <LinearLayout android:id="@+id/ecgEventsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@color/surface_white" android:padding="8dp" android:layout_marginTop="4dp" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="STETHOSCOPE" android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="bold" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Audio reference not yet available -- no device connected." android:textColor="@color/text_secondary" android:textSize="12sp" android:textStyle="italic" android:layout_marginBottom="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

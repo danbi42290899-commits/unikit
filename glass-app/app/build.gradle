@@ -28,9 +28,12 @@ android {
         // Can also be overridden per-launch via an Intent extra, see
         // docs/glass_app.md "Configuring the UNI-HUB address".
         //
-        // 10.42.0.1 is NetworkManager's fixed gateway address when the Pi
-        // runs pi/setup_ap.sh (ipv4.method=shared) -- see pi/README.md.
-        buildConfigField "String", "UNI_HUB_HOST", "\"10.42.0.1\""
+        // Current dev setup: Pi + Phone + Glass all join the same personal
+        // mobile hotspot, and the Pi's address on that hotspot is
+        // 10.18.168.235 -- see pi/README.md. (Not the pi/setup_ap.sh
+        // Pi-hosted-AP mode, which uses 10.42.0.1; that's a separate,
+        // still-valid future deployment path, not what's active today.)
+        buildConfigField "String", "UNI_HUB_HOST", "\"10.18.168.235\""
         buildConfigField "int", "UNI_HUB_PORT", "8000"
     }
 

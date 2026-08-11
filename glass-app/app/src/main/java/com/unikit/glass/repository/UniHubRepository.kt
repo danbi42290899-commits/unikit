@@ -112,6 +112,14 @@ class UniHubRepository(
     /** Returns false immediately (no ack will follow) if not connected. */
     fun sendCapture(): Boolean = controlClient.sendCommand("CAPTURE")
 
+    /**
+     * Generic passthrough for the other /ws/control commands (FREEZE/
+     * UNFREEZE, START_RECORDING/STOP_RECORDING) that double-tap/long-press
+     * now send. CAPTURE keeps using sendCapture() above since it's the only
+     * command whose ack is surfaced back through captureResults.
+     */
+    fun sendCommand(command: String): Boolean = controlClient.sendCommand(command)
+
     companion object {
         private const val TAG = "UniHubRepository"
 

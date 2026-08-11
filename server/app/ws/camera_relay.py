@@ -16,6 +16,10 @@ class CameraRelayManager:
     def __init__(self) -> None:
         self._viewers: set[WebSocket] = set()
         self._lock = asyncio.Lock()
+        # Last frame relayed, kept only so CAPTURE (a REST-less /ws/control
+        # command) has something to persist -- the live relay itself stays
+        # stateless/non-buffering for viewers, see broadcast_frame().
+        self._last_frame: bytes | None = None
 
     async def add_viewer(self, websocket: WebSocket) -> None:
         async with self._lock:
@@ -26,6 +30,7 @@ class CameraRelayManager:
             self._viewers.discard(websocket)
 
     async def broadcast_frame(self, frame: bytes) -> None:
+        self._last_frame = frame
         async with self._lock:
             viewers = list(self._viewers)
         stale = []
@@ -42,6 +47,9 @@ class CameraRelayManager:
     @property
     def viewer_count(self) -> int:
         return len(self._viewers)
+
+    def get_last_frame(self) -> bytes | None:
+        return self._last_frame
 
 
 camera_relay = CameraRelayManager()

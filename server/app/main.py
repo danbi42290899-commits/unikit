@@ -9,7 +9,7 @@ from app.config import STATIC_MONITOR_DIR
 from app.db import init_db
 from app.logging_config import configure_logging
 from app.providers.mock_provider import MockECGProvider, MockPPGProvider, MockVitalsProvider
-from app.routers import devices, exams, glass, patients, status
+from app.routers import devices, exams, glass, media, patients, status
 from app.state.glass_state_manager import glass_state_manager
 from app.ws import camera, control, telemetry
 from app.ws.connection_manager import telemetry_manager
@@ -53,6 +53,7 @@ app.include_router(exams.router)
 app.include_router(status.router)
 app.include_router(devices.router)
 app.include_router(glass.router)
+app.include_router(media.router)
 app.include_router(telemetry.router)
 app.include_router(control.router)
 app.include_router(camera.router)

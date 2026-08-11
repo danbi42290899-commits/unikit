@@ -2,5 +2,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 server/unikit_dev.db
+server/media/
 tests/test_unikit.db
+tests/test_unikit_media/
 .venv/

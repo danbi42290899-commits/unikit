@@ -1,6 +1,18 @@
 <resources>
-    <color name="status_connected">#FF4CD964</color>
-    <color name="status_disconnected">#FFFF4D4D</color>
-    <color name="status_connecting">#FFFFC94D</color>
+    <!-- Connection / device status -->
+    <color name="status_connected">#FF2E7D32</color>
+    <color name="status_disconnected">#FFC62828</color>
+    <color name="status_connecting">#FFF9A825</color>
+
+    <!-- Clean, clinical light theme: deliberately not a "consumer fitness
+         app" look, no gradients, no rounded pill badges, minimal color. -->
+    <color name="background_light">#FFF5F7F8</color>
+    <color name="surface_white">#FFFFFFFF</color>
+    <color name="text_primary">#FF1A1E22</color>
+    <color name="text_secondary">#FF5C6672</color>
+    <color name="divider">#FFDCE1E6</color>
+    <color name="accent_primary">#FF0D6E8C</color>
+    <color name="accent_primary_dark">#FF084D63</color>
+    <color name="action_danger">#FFB3261E</color>
     <color name="scrim_bg">#CC1A1A1A</color>
 </resources>

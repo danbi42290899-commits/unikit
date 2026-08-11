@@ -22,6 +22,11 @@ DATABASE_URL = os.environ.get("UNIKIT_DATABASE_URL", f"sqlite:///{DB_PATH}")
 
 STATIC_MONITOR_DIR = BASE_DIR / "app" / "static" / "monitor"
 
+# Where CAPTURE-persisted otoscope/colposcope still images are written.
+# UNIKIT_MEDIA_DIR lets tests point at an isolated directory, same pattern
+# as UNIKIT_DATABASE_URL.
+MEDIA_STORAGE_DIR = Path(os.environ.get("UNIKIT_MEDIA_DIR", str(BASE_DIR / "media")))
+
 # --- Mock vitals baseline (explicitly simulated, never real) ---
 MOCK_VITALS = {
     "bpSys": 118,

@@ -68,7 +68,14 @@ class GlassHudActivity : AppCompatActivity() {
             .build()
         repository = UniHubRepository(okHttpClient, activityScope)
 
-        gestureDetector = GestureDetector(this, GlassGestureListener(onTap = ::onCaptureTap))
+        gestureDetector = GestureDetector(
+            this,
+            GlassGestureListener(
+                onTap = ::onCaptureTap,
+                onDoubleTapStub = ::onFreezeToggleTap,
+                onLongPressStub = ::onRecordingToggleTap,
+            ),
+        )
         findViewById<View>(R.id.root).setOnTouchListener { _, event -> gestureDetector.onTouchEvent(event) }
 
         observeRepository()
@@ -130,6 +137,30 @@ class GlassHudActivity : AppCompatActivity() {
         val sent = repository.sendCapture()
         if (!sent) {
             Log.w(TAG, "CAPTURE tap ignored: control channel not connected")
+            showTransientBanner("NOT CONNECTED", CAPTURE_BANNER_MS)
+        }
+    }
+
+    /**
+     * Double-tap toggles FREEZE/UNFREEZE based on the last GlassState we
+     * received -- not a local flag -- so Glass stays a passive follower of
+     * server state even for its own gesture, same as every other command.
+     */
+    private fun onFreezeToggleTap() {
+        val frozen = repository.glassState.value?.frozen ?: false
+        val command = if (frozen) "UNFREEZE" else "FREEZE"
+        if (!repository.sendCommand(command)) {
+            Log.w(TAG, "$command ignored: control channel not connected")
+            showTransientBanner("NOT CONNECTED", CAPTURE_BANNER_MS)
+        }
+    }
+
+    /** Long-press toggles START_RECORDING/STOP_RECORDING, same pattern as above. */
+    private fun onRecordingToggleTap() {
+        val recording = repository.glassState.value?.recording ?: false
+        val command = if (recording) "STOP_RECORDING" else "START_RECORDING"
+        if (!repository.sendCommand(command)) {
+            Log.w(TAG, "$command ignored: control channel not connected")
             showTransientBanner("NOT CONNECTED", CAPTURE_BANNER_MS)
         }
     }
