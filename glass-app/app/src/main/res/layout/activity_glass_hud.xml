@@ -20,24 +20,32 @@
 
         <TextView
             android:id="@+id/textBp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudVitalText"
             android:text="BP --/--"
             tools:text="BP 118/76" />
 
         <TextView
             android:id="@+id/textSpo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudVitalText"
             android:text="SpO2 --%"
             tools:text="SpO2 98%" />
 
         <TextView
             android:id="@+id/textHr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudVitalText"
             android:text="HR --"
             tools:text="HR 72" />
 
         <TextView
             android:id="@+id/textTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudVitalText"
             android:text="TEMP -- C"
             tools:text="TEMP 36.7 C" />
@@ -55,12 +63,16 @@
 
         <TextView
             android:id="@+id/textPatient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudVitalText"
             android:text="NO PATIENT"
             tools:text="KJH / F32" />
 
         <TextView
             android:id="@+id/textConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudStatusText"
             android:textColor="@color/hud_connecting"
             android:text="CONNECTING"
@@ -68,6 +80,8 @@
 
         <TextView
             android:id="@+id/textSimBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudBadgeText"
             android:text="SIM"
             android:visibility="gone"
@@ -117,6 +131,8 @@
 
         <TextView
             android:id="@+id/textExamMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudStatusText"
             android:text="NONE"
             tools:text="OTOSCOPE-L" />
@@ -132,6 +148,8 @@
 
         <TextView
             android:id="@+id/textRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             style="@style/HudStatusText"
             android:text=""
             tools:text="● REC 01:24" />
