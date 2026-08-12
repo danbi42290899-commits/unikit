@@ -15,4 +15,13 @@
     <color name="accent_primary_dark">#FF084D63</color>
     <color name="action_danger">#FFB3261E</color>
     <color name="scrim_bg">#CC1A1A1A</color>
+
+    <!-- Module hues (ExamHome carousel): blue/sky/green so the exam
+         modules read like a real clinical monitor instead of one flat tint. -->
+    <color name="hue_blue">#FF0D6E8C</color>
+    <color name="hue_blue_tint">#FFE3EEF2</color>
+    <color name="hue_sky">#FF0EA0C4</color>
+    <color name="hue_sky_tint">#FFDFF5FA</color>
+    <color name="hue_green">#FF12965F</color>
+    <color name="hue_green_tint">#FFDFF6EC</color>
 </resources>

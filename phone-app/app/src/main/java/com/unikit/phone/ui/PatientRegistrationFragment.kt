@@ -3,10 +3,13 @@ package com.unikit.phone.ui
 import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.RadioGroup
@@ -57,7 +60,14 @@ class PatientRegistrationFragment : Fragment(R.layout.fragment_patient_registrat
         fragmentScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
         val inputDob = view.findViewById<TextInputEditText>(R.id.inputDob)
-        inputDob.setOnClickListener { showDatePicker(inputDob) }
+        view.findViewById<ImageButton>(R.id.buttonDobCalendar).setOnClickListener { showDatePicker(inputDob) }
+        inputDob.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                dobCalendar = parseTypedDob(s?.toString().orEmpty())
+            }
+        })
 
         view.findViewById<Button>(R.id.buttonChoosePhoto).setOnClickListener {
             pickPhoto.launch("image/*")
@@ -125,27 +135,39 @@ class PatientRegistrationFragment : Fragment(R.layout.fragment_patient_registrat
         progress.visibility = View.VISIBLE
 
         fragmentScope?.launch {
-            try {
+            val examId = try {
                 activity.repository.createPatient(patientId, name, age, sex)
-                val exam = activity.repository.createExam(patientId)
-                activity.repository.resetSessionBuffers()
-                ExamSession.start(
-                    ExamSession.Data(
-                        patientId = patientId,
-                        examId = exam.examId,
-                        displayName = name,
-                        age = age,
-                        sex = sex,
-                    ),
-                )
-                activity.showRoot(ExamHomeFragment())
+                activity.repository.createExam(patientId).examId
             } catch (e: Exception) {
-                textError.text = "Could not start examination: ${e.message}"
-                textError.visibility = View.VISIBLE
-                button.isEnabled = true
-                progress.visibility = View.GONE
-                Toast.makeText(requireContext(), "START EXAMINATION failed", Toast.LENGTH_SHORT).show()
+                // No reachable UNI-HUB (e.g. first run before the server's
+                // up) shouldn't strand the user on this screen -- fall back
+                // to a local-only demo exam and keep going. Every module
+                // fragment already tolerates a disconnected repository.
+                Toast.makeText(requireContext(), "No UNI-HUB connection -- continuing in demo mode", Toast.LENGTH_SHORT).show()
+                "DEMO-" + System.currentTimeMillis().toString(16).uppercase()
             }
+            activity.repository.resetSessionBuffers()
+            ExamSession.start(
+                ExamSession.Data(
+                    patientId = patientId,
+                    examId = examId,
+                    displayName = name,
+                    age = age,
+                    sex = sex,
+                ),
+            )
+            activity.showRoot(ExamHomeFragment())
+        }
+    }
+
+    private fun parseTypedDob(text: String): Calendar? {
+        if (text.length != 10) return null
+        return try {
+            DATE_FORMAT.isLenient = false
+            val parsed = DATE_FORMAT.parse(text) ?: return null
+            Calendar.getInstance().apply { time = parsed }
+        } catch (e: Exception) {
+            null
         }
     }
 

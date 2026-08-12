@@ -13,8 +13,8 @@ android {
         // hardware -- contrast with glass-app/app/build.gradle.
         minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName "0.1.0-phase3"
+        versionCode 2
+        versionName "0.2.0-phone-registration-carousel"
 
         // Same pattern as glass-app/network/UniHubConfig.kt: one place to
         // repoint the app at a different UNI-HUB without touching code.
